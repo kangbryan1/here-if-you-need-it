@@ -1,147 +1,340 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Here If You Need It</title>
+<meta name="description" content="A free, simple guide for anyone who just got laid off and doesn't know where to start."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
-*{box-sizing:border-box;margin:0;padding:0;}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.app{min-height:640px;display:flex;flex-direction:column;align-items:center;padding:2.5rem 1.25rem 4rem;font-family:'DM Sans',sans-serif;background:#FAFAF8;}
-.screen{display:none;width:100%;max-width:500px;flex-direction:column;align-items:flex-start;}
-.screen.active{display:flex;}
-.logo{font-family:'Lora',serif;font-size:11px;letter-spacing:0.18em;color:#888780;text-transform:uppercase;margin-bottom:2.75rem;}
+  :root {
+    --cream: #FAFAF8;
+    --white: #ffffff;
+    --ink: #2C2C2A;
+    --ink-mid: #5F5E5A;
+    --ink-light: #888780;
+    --ink-xlight: #B4B2A9;
+    --border: #D3D1C7;
+    --border-hover: #888780;
+    --surface: #F1EFE8;
+    --teal-light: #E1F5EE;
+    --teal-mid: #5DCAA5;
+    --teal-dark: #085041;
+    --purple-light: #EEEDFE;
+    --purple-mid: #AFA9EC;
+    --purple-dark: #26215C;
+    --green-check: #1D9E75;
+  }
 
-.bubble{background:#fff;border:0.5px solid #D3D1C7;border-radius:2px 16px 16px 16px;padding:11px 15px;font-size:15px;line-height:1.7;color:#2C2C2A;margin-bottom:7px;max-width:88%;opacity:0;transform:translateY(5px);transition:opacity 0.35s ease,transform 0.35s ease;}
-.bubble.show{opacity:1;transform:translateY(0);}
-.bubble em{font-style:italic;font-family:'Lora',serif;}
+  html, body {
+    min-height: 100%;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
 
-.typing{background:#fff;border:0.5px solid #D3D1C7;border-radius:2px 16px 16px 16px;padding:11px 15px;margin-bottom:7px;max-width:88%;opacity:0;transition:opacity 0.2s ease;display:flex;gap:5px;align-items:center;height:40px;}
-.typing.show{opacity:1;}
-.dot-t{width:5px;height:5px;border-radius:50%;background:#B4B2A9;animation:blink 1.3s infinite;}
-.dot-t:nth-child(2){animation-delay:0.22s;}.dot-t:nth-child(3){animation-delay:0.44s;}
-@keyframes blink{0%,70%,100%{opacity:0.2}35%{opacity:1}}
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1.5rem 5rem;
+    min-height: 100vh;
+  }
 
-.choices{display:flex;flex-direction:column;gap:9px;margin-top:1.5rem;width:100%;opacity:0;transition:opacity 0.4s ease;}
-.choices.show{opacity:1;}
-.choice-btn{background:#fff !important;border:0.5px solid #2C2C2A !important;border-radius:12px;padding:13px 17px;font-size:14px;font-family:'DM Sans',sans-serif;color:#2C2C2A !important;cursor:pointer;text-align:left;transition:background 0.15s;line-height:1.5;}
-.choice-btn:hover{background:#F1EFE8 !important;}
-.choice-label{font-weight:500;font-size:15px;display:block;margin-bottom:2px;color:#2C2C2A;}
-.choice-sub{font-size:13px;color:#5F5E5A;display:block;}
+  .screen { display: none; width: 100%; max-width: 520px; flex-direction: column; align-items: flex-start; }
+  .screen.active { display: flex; }
 
-.path-tabs{display:flex;gap:7px;margin-bottom:1.5rem;}
-.tab{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:500;letter-spacing:0.04em;cursor:pointer;border:0.5px solid #D3D1C7;background:transparent;color:#888780;font-family:'DM Sans',sans-serif;transition:all 0.18s;}
-.tab.active-p{background:#E1F5EE;border-color:#5DCAA5;color:#085041;}
-.tab.active-g{background:#EEEDFE;border-color:#AFA9EC;color:#26215C;}
+  .logo {
+    font-family: 'Lora', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
 
-.step-dots{display:flex;gap:6px;margin-bottom:1.75rem;}
-.sd{width:6px;height:6px;border-radius:50%;background:#D3D1C7;transition:all 0.3s;}
-.sd.done{background:#888780;}
-.sd.cur{background:#2C2C2A;width:18px;border-radius:3px;}
+  .bubble {
+    background: var(--white);
+    border: 0.5px solid var(--border);
+    border-radius: 2px 18px 18px 18px;
+    padding: 12px 16px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink);
+    margin-bottom: 8px;
+    max-width: 88%;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.38s ease, transform 0.38s ease;
+  }
+  .bubble.show { opacity: 1; transform: translateY(0); }
+  .bubble em { font-style: italic; font-family: 'Lora', serif; }
 
-.card{width:100%;background:#fff;border:0.5px solid #D3D1C7;border-radius:14px;padding:16px 18px;margin-top:1.1rem;opacity:0;transform:translateY(5px);transition:opacity 0.35s ease,transform 0.35s ease;}
-.card.show{opacity:1;transform:translateY(0);}
-.card.instant{opacity:1;transform:none;}
-.card-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#888780;margin-bottom:7px;font-weight:500;}
-.card-title{font-size:15px;font-weight:500;color:#2C2C2A;margin-bottom:5px;}
-.card-body{font-size:13px;color:#5F5E5A;line-height:1.65;}
+  .typing {
+    background: var(--white);
+    border: 0.5px solid var(--border);
+    border-radius: 2px 18px 18px 18px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    max-width: 88%;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .typing.show { opacity: 1; }
+  .dot-t {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ink-xlight);
+    animation: blink 1.3s infinite;
+  }
+  .dot-t:nth-child(2) { animation-delay: 0.22s; }
+  .dot-t:nth-child(3) { animation-delay: 0.44s; }
+  @keyframes blink { 0%,70%,100% { opacity: 0.2; } 35% { opacity: 1; } }
 
-.btn{padding:11px 22px;border-radius:10px;background:#fff !important;border:0.5px solid #2C2C2A !important;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:500;color:#2C2C2A !important;cursor:pointer;opacity:0;transition:opacity 0.4s ease,background 0.15s;margin-top:1.4rem;}
-.btn.show{opacity:1;}
-.btn:hover{background:#F1EFE8 !important;}
-.btn.always{opacity:1;margin-top:1rem;}
+  .choices {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: 1.5rem; width: 100%;
+    opacity: 0; transition: opacity 0.4s ease;
+  }
+  .choices.show { opacity: 1; }
+  .choice-btn {
+    background: var(--white);
+    border: 0.5px solid var(--ink);
+    border-radius: 13px;
+    padding: 14px 18px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+    line-height: 1.5;
+  }
+  .choice-btn:hover { background: var(--surface); }
+  .choice-label { font-weight: 500; font-size: 15px; display: block; margin-bottom: 2px; }
+  .choice-sub { font-size: 13px; color: var(--ink-mid); display: block; }
 
-/* Force all text inputs to light */
-input[type="text"], textarea, select {
-  background-color:#ffffff !important;
-  background:#ffffff !important;
-  color:#2C2C2A !important;
-  -webkit-text-fill-color:#2C2C2A !important;
-  border-color:#D3D1C7 !important;
-  box-shadow:none !important;
-  -webkit-box-shadow:none !important;
-  color-scheme: light;
-}
-input[type="text"]::placeholder, textarea::placeholder {
-  color:#B4B2A9 !important;
-  -webkit-text-fill-color:#B4B2A9 !important;
-  opacity:1;
-}
-input[type="text"]:-webkit-autofill,
-input[type="text"]:-webkit-autofill:hover,
-input[type="text"]:-webkit-autofill:focus {
-  -webkit-box-shadow:0 0 0 1000px #ffffff inset !important;
-  -webkit-text-fill-color:#2C2C2A !important;
-}
+  .path-tabs { display: flex; gap: 7px; margin-bottom: 1.5rem; }
+  .tab {
+    padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.04em; cursor: pointer; border: 0.5px solid var(--border);
+    background: transparent; color: var(--ink-light);
+    font-family: 'DM Sans', sans-serif; transition: all 0.18s;
+  }
+  .tab.active-p { background: var(--teal-light); border-color: var(--teal-mid); color: var(--teal-dark); }
+  .tab.active-g { background: var(--purple-light); border-color: var(--purple-mid); color: var(--purple-dark); }
 
-.name-wrap{width:100%;margin-top:1.5rem;opacity:0;transition:opacity 0.4s ease;}
-.name-wrap.show{opacity:1;}
-.name-wrap input{width:100%;font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;border:0.5px solid #D3D1C7 !important;outline:none;color-scheme:light;}
-.name-wrap input:focus{border-color:#888780 !important;outline:none;box-shadow:none !important;}
-.name-wrap button{margin-top:9px;padding:10px 20px;border-radius:8px;background:#fff !important;border:0.5px solid #2C2C2A !important;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#2C2C2A !important;cursor:pointer;transition:background 0.15s;}
-.name-wrap button:hover{background:#F1EFE8 !important;}
+  .step-dots { display: flex; gap: 6px; margin-bottom: 1.75rem; }
+  .sd { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all 0.3s; }
+  .sd.done { background: var(--ink-light); }
+  .sd.cur { background: var(--ink); width: 18px; border-radius: 3px; }
 
-.journal-wrap{width:100%;margin-top:1.25rem;opacity:0;transition:opacity 0.5s ease;}
-.journal-wrap.show{opacity:1;}
-.journal-wrap textarea{width:100%;min-height:130px;font-family:'Lora',serif;font-size:15px;line-height:1.75;padding:14px 16px;border-radius:12px;border:0.5px solid #D3D1C7 !important;outline:none;resize:none;transition:min-height 0.3s ease;color-scheme:light;}
-.journal-wrap textarea:focus{border-color:#888780 !important;min-height:180px;outline:none;box-shadow:none !important;}
-.journal-hint{font-size:12px;color:#B4B2A9;margin-top:7px;line-height:1.5;font-style:italic;}
+  .card {
+    width: 100%; background: var(--white); border: 0.5px solid var(--border);
+    border-radius: 14px; padding: 16px 18px; margin-top: 1.1rem;
+    opacity: 0; transform: translateY(5px);
+    transition: opacity 0.38s ease, transform 0.38s ease;
+  }
+  .card.show { opacity: 1; transform: translateY(0); }
+  .card.instant { opacity: 1; transform: none; }
+  .card-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 7px; font-weight: 500; }
+  .card-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 5px; }
+  .card-body { font-size: 13px; color: var(--ink-mid); line-height: 1.65; }
 
-.people-list{width:100%;display:flex;flex-direction:column;gap:7px;margin-top:1rem;}
-.prow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:0.5px solid #D3D1C7;background:#fff;}
-.avi{width:34px;height:34px;border-radius:50%;background:#F1EFE8;border:0.5px solid #D3D1C7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#888780;flex-shrink:0;transition:all 0.2s;}
-.prow input[type="text"]{flex:1;font-family:'DM Sans',sans-serif;font-size:14px;border:none !important;background:transparent !important;color:#2C2C2A !important;-webkit-text-fill-color:#2C2C2A !important;outline:none;padding:0;box-shadow:none !important;}
-.prow input[type="text"]::placeholder{color:#B4B2A9 !important;-webkit-text-fill-color:#B4B2A9 !important;}
-.rel-tag{font-size:11px;color:#B4B2A9;white-space:nowrap;flex-shrink:0;}
-.add-btn{margin-top:6px;padding:8px 14px;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:#fff !important;border:0.5px dashed #2C2C2A !important;color:#888780;cursor:pointer;width:100%;text-align:center;transition:background 0.15s;}
-.add-btn:hover{background:#F1EFE8 !important;}
+  .btn {
+    padding: 11px 22px; border-radius: 10px;
+    background: var(--white); border: 0.5px solid var(--ink);
+    font-size: 14px; font-family: 'DM Sans', sans-serif; font-weight: 500;
+    color: var(--ink); cursor: pointer;
+    opacity: 0; transition: opacity 0.4s ease, background 0.15s; margin-top: 1.4rem;
+  }
+  .btn.show { opacity: 1; }
+  .btn:hover { background: var(--surface); }
+  .btn.always { opacity: 1; margin-top: 1rem; }
 
-.doc-list{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
-.doc-item{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;border-radius:8px;border:0.5px solid #D3D1C7;background:#F1EFE8;cursor:pointer;transition:all 0.15s;}
-.doc-item.chk{background:#E1F5EE;border-color:#5DCAA5;}
-.doc-box{width:17px;height:17px;border-radius:4px;border:1.5px solid #D3D1C7;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all 0.15s;}
-.doc-item.chk .doc-box{background:#1D9E75;border-color:#1D9E75;}
-.doc-ck{font-size:11px;color:#fff;opacity:0;transition:opacity 0.15s;font-weight:700;line-height:1;}
-.doc-item.chk .doc-ck{opacity:1;}
-.doc-text{font-size:13px;color:#2C2C2A;font-weight:500;}
-.doc-detail{font-size:12px;color:#5F5E5A;margin-top:1px;}
+  .name-wrap { width: 100%; margin-top: 1.5rem; opacity: 0; transition: opacity 0.4s ease; }
+  .name-wrap.show { opacity: 1; }
+  .name-wrap input {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 15px;
+    padding: 12px 14px; border-radius: 10px;
+    border: 0.5px solid var(--border);
+    background: var(--white) !important; color: var(--ink) !important;
+    outline: none; color-scheme: light;
+    -webkit-text-fill-color: var(--ink) !important;
+  }
+  .name-wrap input:focus { border-color: var(--border-hover); }
+  .name-wrap input::placeholder { color: var(--ink-xlight); -webkit-text-fill-color: var(--ink-xlight) !important; opacity: 1; }
+  .name-wrap button {
+    margin-top: 9px; padding: 10px 20px; border-radius: 8px;
+    background: var(--white); border: 0.5px solid var(--ink);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    color: var(--ink); cursor: pointer; transition: background 0.15s;
+  }
+  .name-wrap button:hover { background: var(--surface); }
 
-.tip-list{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
-.tip-item{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border-radius:8px;background:#F1EFE8;border:0.5px solid #D3D1C7;}
-.tip-num{font-size:11px;font-weight:500;color:#888780;min-width:18px;padding-top:1px;letter-spacing:0.04em;}
-.tip-text{font-size:13px;color:#2C2C2A;line-height:1.6;}
-.tip-sub{font-size:12px;color:#5F5E5A;margin-top:2px;}
+  .journal-wrap { width: 100%; margin-top: 1.25rem; opacity: 0; transition: opacity 0.5s ease; }
+  .journal-wrap.show { opacity: 1; }
+  .journal-wrap textarea {
+    width: 100%; min-height: 130px;
+    font-family: 'Lora', serif; font-size: 15px; line-height: 1.8;
+    padding: 14px 16px; border-radius: 12px;
+    border: 0.5px solid var(--border);
+    background: var(--white) !important; color: var(--ink) !important;
+    outline: none; resize: none;
+    transition: min-height 0.3s ease, border-color 0.2s;
+    color-scheme: light; -webkit-text-fill-color: var(--ink) !important;
+  }
+  .journal-wrap textarea:focus { border-color: var(--border-hover); min-height: 180px; }
+  .journal-wrap textarea::placeholder { color: var(--ink-xlight); font-style: italic; -webkit-text-fill-color: var(--ink-xlight) !important; opacity: 1; }
+  .journal-hint { font-size: 12px; color: var(--ink-xlight); margin-top: 7px; line-height: 1.5; font-style: italic; }
 
-.fade{opacity:0;transition:opacity 0.4s ease;}
-.fade.show{opacity:1;}
+  .people-list { width: 100%; display: flex; flex-direction: column; gap: 7px; margin-top: 1rem; }
+  .prow {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    border-radius: 10px; border: 0.5px solid var(--border); background: var(--white);
+  }
+  .avi {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--surface); border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500; color: var(--ink-light);
+    flex-shrink: 0; transition: all 0.2s;
+  }
+  .prow input[type="text"] {
+    flex: 1; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    border: none !important; background: transparent !important; color: var(--ink) !important;
+    outline: none; padding: 0; color-scheme: light;
+    -webkit-text-fill-color: var(--ink) !important;
+    box-shadow: none !important;
+  }
+  .prow input[type="text"]::placeholder { color: var(--ink-xlight); -webkit-text-fill-color: var(--ink-xlight) !important; opacity: 1; }
+  .rel-tag { font-size: 11px; color: var(--ink-xlight); white-space: nowrap; flex-shrink: 0; }
+  .add-btn {
+    margin-top: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px;
+    font-family: 'DM Sans', sans-serif; background: var(--white);
+    border: 0.5px dashed var(--ink); color: var(--ink-light);
+    cursor: pointer; width: 100%; text-align: center; transition: background 0.15s;
+  }
+  .add-btn:hover { background: var(--surface); }
 
-.state-search-wrap{width:100%;margin-top:1.25rem;opacity:0;transition:opacity 0.4s ease;}
-.state-search-wrap.show{opacity:1;}
-.state-dd{position:relative;width:100%;}
-.state-dd select{width:100%;font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 36px 12px 14px;border-radius:10px;border:0.5px solid #D3D1C7 !important;outline:none;appearance:none;cursor:pointer;color-scheme:light;}
-.state-dd select:focus{border-color:#888780 !important;outline:none;box-shadow:none !important;}
-.state-dd::after{content:'↓';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#888780;pointer-events:none;font-size:13px;}
-.state-result{width:100%;margin-top:10px;opacity:0;transform:translateY(4px);transition:opacity 0.35s ease,transform 0.35s ease;}
-.state-result.show{opacity:1;transform:translateY(0);}
-.state-result-inner{background:#fff;border:0.5px solid #D3D1C7;border-radius:12px;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.state-name-lbl{font-size:14px;font-weight:500;color:#2C2C2A;}
-.state-go{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;background:#EEEDFE;border:0.5px solid #AFA9EC;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#26215C;cursor:pointer;text-decoration:none;transition:background 0.15s;white-space:nowrap;}
-.state-go:hover{background:#CECBF6;}
+  .doc-list { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .doc-item {
+    display: flex; align-items: flex-start; gap: 10px; padding: 9px 11px;
+    border-radius: 8px; border: 0.5px solid var(--border);
+    background: var(--surface); cursor: pointer; transition: all 0.15s;
+    user-select: none;
+  }
+  .doc-item.chk { background: var(--teal-light); border-color: var(--teal-mid); }
+  .doc-box {
+    width: 17px; height: 17px; border-radius: 4px;
+    border: 1.5px solid var(--border); background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px; transition: all 0.15s;
+  }
+  .doc-item.chk .doc-box { background: var(--green-check); border-color: var(--green-check); }
+  .doc-ck { font-size: 10px; color: var(--white); opacity: 0; transition: opacity 0.15s; font-weight: 700; }
+  .doc-item.chk .doc-ck { opacity: 1; }
+  .doc-text { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .doc-detail { font-size: 12px; color: var(--ink-mid); margin-top: 1px; }
 
-.inner-tab-wrap{width:100%;margin-top:1.25rem;opacity:0;transition:opacity 0.4s ease;}
-.inner-tab-wrap.show{opacity:1;}
-.inner-tabs{display:flex;border-bottom:0.5px solid #D3D1C7;margin-bottom:1rem;}
-.itab{padding:8px 16px;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;color:#888780;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-0.5px;transition:color 0.15s,border-color 0.15s;}
-.itab.active{color:#2C2C2A;border-bottom-color:#2C2C2A;}
-.itab-panel{display:none;}
-.itab-panel.active{display:block;}
+  .tip-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .tip-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 9px 11px; border-radius: 8px;
+    background: var(--surface); border: 0.5px solid var(--border);
+  }
+  .tip-num { font-size: 11px; font-weight: 500; color: var(--ink-light); min-width: 18px; padding-top: 1px; letter-spacing: 0.04em; }
+  .tip-text { font-size: 13px; color: var(--ink); line-height: 1.6; }
+  .tip-sub { font-size: 12px; color: var(--ink-mid); margin-top: 2px; }
 
-.job-fields{width:100%;display:flex;flex-direction:column;gap:8px;margin-top:1rem;opacity:0;transition:opacity 0.4s ease;}
-.job-fields.show{opacity:1;}
-.job-field-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:0.5px solid #D3D1C7;background:#fff;}
-.job-num{font-size:12px;font-weight:500;color:#B4B2A9;min-width:20px;letter-spacing:0.04em;}
-.job-field-row input[type="text"]{flex:1;font-family:'DM Sans',sans-serif;font-size:14px;border:none !important;background:transparent !important;color:#2C2C2A !important;-webkit-text-fill-color:#2C2C2A !important;outline:none;padding:0;box-shadow:none !important;}
-.job-field-row input[type="text"]::placeholder{color:#B4B2A9 !important;-webkit-text-fill-color:#B4B2A9 !important;}
+  .fade { opacity: 0; transition: opacity 0.4s ease; }
+  .fade.show { opacity: 1; }
+
+  .state-search-wrap { width: 100%; margin-top: 1.25rem; opacity: 0; transition: opacity 0.4s ease; }
+  .state-search-wrap.show { opacity: 1; }
+  .state-dd { position: relative; width: 100%; }
+  .state-dd select {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 15px;
+    padding: 12px 36px 12px 14px; border-radius: 10px;
+    border: 0.5px solid var(--border);
+    background: var(--white) !important; color: var(--ink) !important;
+    outline: none; appearance: none; cursor: pointer;
+    color-scheme: light; -webkit-text-fill-color: var(--ink) !important;
+  }
+  .state-dd select:focus { border-color: var(--border-hover); }
+  .state-dd::after {
+    content: '↓'; position: absolute; right: 14px; top: 50%;
+    transform: translateY(-50%); color: var(--ink-light);
+    pointer-events: none; font-size: 13px;
+  }
+  .state-result {
+    width: 100%; margin-top: 10px; opacity: 0; transform: translateY(4px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .state-result.show { opacity: 1; transform: translateY(0); }
+  .state-result-inner {
+    background: var(--white); border: 0.5px solid var(--border);
+    border-radius: 12px; padding: 13px 15px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .state-name-lbl { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .state-go {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 8px 14px; border-radius: 8px;
+    background: var(--purple-light); border: 0.5px solid var(--purple-mid);
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    color: var(--purple-dark); cursor: pointer; text-decoration: none;
+    transition: background 0.15s; white-space: nowrap;
+  }
+  .state-go:hover { background: #CECBF6; }
+
+  .inner-tab-wrap { width: 100%; margin-top: 1.25rem; opacity: 0; transition: opacity 0.4s ease; }
+  .inner-tab-wrap.show { opacity: 1; }
+  .inner-tabs { display: flex; border-bottom: 0.5px solid var(--border); margin-bottom: 1rem; }
+  .itab {
+    padding: 8px 16px; font-size: 13px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif; color: var(--ink-light);
+    cursor: pointer; border: none; background: transparent;
+    border-bottom: 2px solid transparent; margin-bottom: -0.5px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .itab.active { color: var(--ink); border-bottom-color: var(--ink); }
+  .itab-panel { display: none; }
+  .itab-panel.active { display: block; }
+
+  .job-fields { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 1rem; opacity: 0; transition: opacity 0.4s ease; }
+  .job-fields.show { opacity: 1; }
+  .job-field-row {
+    display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+    border-radius: 10px; border: 0.5px solid var(--border); background: var(--white);
+  }
+  .job-num { font-size: 12px; font-weight: 500; color: var(--ink-xlight); min-width: 20px; letter-spacing: 0.04em; }
+  .job-field-row input[type="text"] {
+    flex: 1; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    border: none !important; background: transparent !important; color: var(--ink) !important;
+    outline: none; padding: 0; color-scheme: light;
+    -webkit-text-fill-color: var(--ink) !important;
+    box-shadow: none !important;
+  }
+  .job-field-row input[type="text"]::placeholder { color: var(--ink-xlight); -webkit-text-fill-color: var(--ink-xlight) !important; opacity: 1; }
+
+  @media (max-width: 480px) {
+    body { padding: 2rem 1rem 4rem; }
+    .bubble { font-size: 14px; max-width: 95%; }
+  }
 </style>
-
-<div class="app">
-<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Here If You Need It — support after a layoff</h2>
+</head>
+<body>
 
 <!-- S0: Landing -->
 <div class="screen active" id="s0">
@@ -154,7 +347,7 @@ input[type="text"]:-webkit-autofill:focus {
   <div class="typing" id="t0d"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
   <div class="bubble" id="b0d">first, what should I call you?</div>
   <div class="name-wrap" id="nwrap">
-    <input type="text" id="nfield" placeholder="type your name…" autocomplete="off" style="color-scheme:light;background:#fff;color:#2C2C2A;"/>
+    <input type="text" id="nfield" placeholder="type your name…" autocomplete="off"/>
     <button onclick="submitName()">that's me →</button>
   </div>
 </div>
@@ -168,15 +361,24 @@ input[type="text"]:-webkit-autofill:focus {
   <div class="typing" id="t1c"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
   <div class="bubble" id="b1c">what do you need right now?</div>
   <div class="choices" id="c1">
-    <button class="choice-btn" onclick="choosePath('process')"><span class="choice-label">feel it out</span><span class="choice-sub">help me process what just happened and find someone to lean on</span></button>
-    <button class="choice-btn" onclick="choosePath('grind')"><span class="choice-label">get moving</span><span class="choice-sub">i need to take action — unemployment, resume, job search</span></button>
+    <button class="choice-btn" onclick="choosePath('process')">
+      <span class="choice-label">feel it out</span>
+      <span class="choice-sub">help me process what just happened and find someone to lean on</span>
+    </button>
+    <button class="choice-btn" onclick="choosePath('grind')">
+      <span class="choice-label">get moving</span>
+      <span class="choice-sub">i need to take action — unemployment, resume, job search</span>
+    </button>
   </div>
 </div>
 
 <!-- SP1: Process — journal -->
 <div class="screen" id="sp1">
   <div class="logo">Here if you need it</div>
-  <div class="path-tabs"><button class="tab active-p">feel it out</button><button class="tab" onclick="switchTo('grind')">get moving</button></div>
+  <div class="path-tabs">
+    <button class="tab active-p">feel it out</button>
+    <button class="tab" onclick="switchTo('grind')">get moving</button>
+  </div>
   <div class="step-dots"><div class="sd cur"></div><div class="sd"></div><div class="sd"></div></div>
   <div class="bubble show">i'm really glad you're here.</div>
   <div class="typing" id="tp1b"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
@@ -184,7 +386,7 @@ input[type="text"]:-webkit-autofill:focus {
   <div class="typing" id="tp1c"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
   <div class="bubble" id="bp1c">whatever's going through your head — this is a safe place to just let it out. no one's reading this. it's just for you.</div>
   <div class="journal-wrap" id="jwrap">
-    <textarea id="journal" placeholder="just start writing… there's no right way to do this." style="color-scheme:light;background:#fff;color:#2C2C2A;"></textarea>
+    <textarea id="journal" placeholder="just start writing… there's no right way to do this."></textarea>
     <div class="journal-hint">this is yours. nothing you write here is saved or seen by anyone.</div>
   </div>
   <button class="btn" id="btnp1" onclick="goTo('sp2')">okay. i wrote something. →</button>
@@ -193,7 +395,10 @@ input[type="text"]:-webkit-autofill:focus {
 <!-- SP2: Process — support network -->
 <div class="screen" id="sp2">
   <div class="logo">Here if you need it</div>
-  <div class="path-tabs"><button class="tab active-p">feel it out</button><button class="tab" onclick="switchTo('grind')">get moving</button></div>
+  <div class="path-tabs">
+    <button class="tab active-p">feel it out</button>
+    <button class="tab" onclick="switchTo('grind')">get moving</button>
+  </div>
   <div class="step-dots"><div class="sd done"></div><div class="sd cur"></div><div class="sd"></div></div>
   <div class="bubble show">good. that took something.</div>
   <div class="typing" id="tp2b"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
@@ -203,18 +408,21 @@ input[type="text"]:-webkit-autofill:focus {
   <div class="typing" id="tp2d"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
   <div class="bubble" id="bp2d">who's in your corner?</div>
   <div class="people-list fade" id="plist">
-    <div class="prow"><div class="avi" id="av0">?</div><input type="text" placeholder="a close friend…" oninput="updateAvi(this,0)" style="color-scheme:light;"/><span class="rel-tag">friend</span></div>
-    <div class="prow"><div class="avi" id="av1">?</div><input type="text" placeholder="someone in your family…" oninput="updateAvi(this,1)" style="color-scheme:light;"/><span class="rel-tag">family</span></div>
-    <div class="prow"><div class="avi" id="av2">?</div><input type="text" placeholder="a mentor or old colleague…" oninput="updateAvi(this,2)" style="color-scheme:light;"/><span class="rel-tag">mentor</span></div>
+    <div class="prow"><div class="avi" id="av0">?</div><input type="text" placeholder="a close friend…" oninput="updateAvi(this,0)"/><span class="rel-tag">friend</span></div>
+    <div class="prow"><div class="avi" id="av1">?</div><input type="text" placeholder="someone in your family…" oninput="updateAvi(this,1)"/><span class="rel-tag">family</span></div>
+    <div class="prow"><div class="avi" id="av2">?</div><input type="text" placeholder="a mentor or old colleague…" oninput="updateAvi(this,2)"/><span class="rel-tag">mentor</span></div>
   </div>
   <button class="add-btn fade" id="addbtn" onclick="addPerson()">+ add another person</button>
   <button class="btn show" style="margin-top:1.25rem;" onclick="goTo('sp3')">i know who to call. →</button>
 </div>
 
-<!-- SP3: Process — permission -->
+<!-- SP3: Process — permission to feel -->
 <div class="screen" id="sp3">
   <div class="logo">Here if you need it</div>
-  <div class="path-tabs"><button class="tab active-p">feel it out</button><button class="tab" onclick="switchTo('grind')">get moving</button></div>
+  <div class="path-tabs">
+    <button class="tab active-p">feel it out</button>
+    <button class="tab" onclick="switchTo('grind')">get moving</button>
+  </div>
   <div class="step-dots"><div class="sd done"></div><div class="sd done"></div><div class="sd cur"></div></div>
   <div class="bubble show">one more thing.</div>
   <div class="typing" id="tp3b"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
@@ -229,7 +437,10 @@ input[type="text"]:-webkit-autofill:focus {
 <!-- SG1: Grind — unemployment -->
 <div class="screen" id="sg1">
   <div class="logo">Here if you need it</div>
-  <div class="path-tabs"><button class="tab" onclick="switchTo('process')">feel it out</button><button class="tab active-g">get moving</button></div>
+  <div class="path-tabs">
+    <button class="tab" onclick="switchTo('process')">feel it out</button>
+    <button class="tab active-g">get moving</button>
+  </div>
   <div class="step-dots"><div class="sd cur"></div><div class="sd"></div><div class="sd"></div></div>
   <div class="bubble show">okay. let's move.</div>
   <div class="typing" id="tg1b"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
@@ -240,7 +451,7 @@ input[type="text"]:-webkit-autofill:focus {
   <div class="bubble" id="bg1d">which state are you filing in?</div>
   <div class="state-search-wrap" id="state-wrap">
     <div class="state-dd">
-      <select id="state-select" onchange="onStateSelect()" style="color-scheme:light;background:#fff;color:#2C2C2A;">
+      <select id="state-select" onchange="onStateSelect()">
         <option value="">select your state…</option>
         <option value="Alabama|https://labor.alabama.gov/uc/claimantinfo.aspx">Alabama</option>
         <option value="Alaska|https://labor.alaska.gov/unemployment/applicants.htm">Alaska</option>
@@ -298,7 +509,7 @@ input[type="text"]:-webkit-autofill:focus {
     <div class="state-result" id="state-result">
       <div class="state-result-inner">
         <span class="state-name-lbl" id="state-name-lbl">—</span>
-        <a class="state-go" id="state-link" href="#" target="_blank" rel="noopener noreferrer">file now <i class="ti ti-external-link" style="font-size:13px;" aria-hidden="true"></i></a>
+        <a class="state-go" id="state-link" href="#" target="_blank" rel="noopener noreferrer">file now ↗</a>
       </div>
     </div>
     <div class="card" id="cg1-checklist">
@@ -318,10 +529,13 @@ input[type="text"]:-webkit-autofill:focus {
   <button class="btn always" onclick="goTo('sg2')">i've got it. what's next? →</button>
 </div>
 
-<!-- SG2: Grind — resume & network tabs -->
+<!-- SG2: Grind — resume & network -->
 <div class="screen" id="sg2">
   <div class="logo">Here if you need it</div>
-  <div class="path-tabs"><button class="tab" onclick="switchTo('process')">feel it out</button><button class="tab active-g">get moving</button></div>
+  <div class="path-tabs">
+    <button class="tab" onclick="switchTo('process')">feel it out</button>
+    <button class="tab active-g">get moving</button>
+  </div>
   <div class="step-dots"><div class="sd done"></div><div class="sd cur"></div><div class="sd"></div></div>
   <div class="bubble show">good. now let's get your foundation in order.</div>
   <div class="typing" id="tg2b"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
@@ -363,19 +577,20 @@ input[type="text"]:-webkit-autofill:focus {
 <!-- SG3: Grind — job search -->
 <div class="screen" id="sg3">
   <div class="logo">Here if you need it</div>
-  <div class="path-tabs"><button class="tab" onclick="switchTo('process')">feel it out</button><button class="tab active-g">get moving</button></div>
+  <div class="path-tabs">
+    <button class="tab" onclick="switchTo('process')">feel it out</button>
+    <button class="tab active-g">get moving</button>
+  </div>
   <div class="step-dots"><div class="sd done"></div><div class="sd done"></div><div class="sd cur"></div></div>
   <div class="bubble show">last one.</div>
   <div class="typing" id="tg3b"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
-  <div class="bubble" id="bg3b">don't open a job board yet. instead — write down five companies you'd genuinely love to work at.</div>
+  <div class="bubble" id="bg3b">don't open a job board yet. instead — write down three companies you'd genuinely love to work at.</div>
   <div class="typing" id="tg3c"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
   <div class="bubble" id="bg3c">don't check if they're hiring. don't filter by salary. just the ones that excite you. that list is your north star.</div>
   <div class="job-fields" id="jobfields">
-    <div class="job-field-row"><span class="job-num">01</span><input type="text" placeholder="a company you'd love…" style="color-scheme:light;"/></div>
-    <div class="job-field-row"><span class="job-num">02</span><input type="text" placeholder="another one…" style="color-scheme:light;"/></div>
-    <div class="job-field-row"><span class="job-num">03</span><input type="text" placeholder="keep going…" style="color-scheme:light;"/></div>
-    <div class="job-field-row"><span class="job-num">04</span><input type="text" placeholder="almost there…" style="color-scheme:light;"/></div>
-    <div class="job-field-row"><span class="job-num">05</span><input type="text" placeholder="one more." style="color-scheme:light;"/></div>
+    <div class="job-field-row"><span class="job-num">01</span><input type="text" placeholder="a company you'd love…"/></div>
+    <div class="job-field-row"><span class="job-num">02</span><input type="text" placeholder="another one…"/></div>
+    <div class="job-field-row"><span class="job-num">03</span><input type="text" placeholder="one more."/></div>
   </div>
   <button class="btn always" onclick="goTo('sbridge')">that's my list. →</button>
 </div>
@@ -389,127 +604,142 @@ input[type="text"]:-webkit-autofill:focus {
   <div class="typing" id="tbr3"><div class="dot-t"></div><div class="dot-t"></div><div class="dot-t"></div></div>
   <div class="bubble" id="bbr3">the other path is here whenever you're ready for it.</div>
   <div class="choices" id="bc">
-    <button class="choice-btn" id="bother" onclick="goToOther()"><span class="choice-label" id="blabel">—</span><span class="choice-sub" id="bsub">—</span></button>
-    <button class="choice-btn" onclick="restart()"><span class="choice-label">start over</span><span class="choice-sub">go back to the beginning</span></button>
+    <button class="choice-btn" id="bother" onclick="goToOther()">
+      <span class="choice-label" id="blabel">—</span>
+      <span class="choice-sub" id="bsub">—</span>
+    </button>
+    <button class="choice-btn" onclick="restart()">
+      <span class="choice-label">start over</span>
+      <span class="choice-sub">go back to the beginning</span>
+    </button>
   </div>
 </div>
 
-</div>
-
 <script>
-let uname='',path='',pcount=3;
-const G=id=>document.getElementById(id);
-const wait=ms=>new Promise(r=>setTimeout(r,ms));
-const T=0.8;
+let uname = '', path = '', pcount = 3;
+const G = id => document.getElementById(id);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const T = 0.8;
 
-async function typ(tid,ms){await wait(ms*T);G(tid)&&G(tid).classList.add('show');}
-async function untyp(tid){G(tid)&&G(tid).classList.remove('show');}
-async function bub(bid,tid,ms){
-  if(tid)await typ(tid,ms*T>550*T?ms*T-440:0);
-  await wait(ms*T);
-  if(tid)untyp(tid);
-  G(bid)&&G(bid).classList.add('show');
+async function typ(tid, ms) { await wait(ms * T); G(tid) && G(tid).classList.add('show'); }
+async function untyp(tid) { G(tid) && G(tid).classList.remove('show'); }
+async function bub(bid, tid, ms) {
+  if (tid) await typ(tid, ms * T > 550 * T ? ms * T - 440 : 0);
+  await wait(ms * T);
+  if (tid) untyp(tid);
+  G(bid) && G(bid).classList.add('show');
 }
-async function show(id,ms){await wait(ms*T);G(id)&&G(id).classList.add('show');}
+async function show(id, ms) { await wait(ms * T); G(id) && G(id).classList.add('show'); }
 
-function scr(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));G(id)&&G(id).classList.add('active');}
+function scr(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  G(id) && G(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-(async()=>{
-  await bub('b0a',null,400);
-  await bub('b0b','t0b',1500);
-  await bub('b0c','t0c',2800);
-  await bub('b0d','t0d',4200);
-  await show('nwrap',5000);
+(async () => {
+  await bub('b0a', null, 400);
+  await bub('b0b', 't0b', 1500);
+  await bub('b0c', 't0c', 2800);
+  await bub('b0d', 't0d', 4200);
+  await show('nwrap', 5000);
 })();
 
-G('nfield').addEventListener('keydown',e=>{if(e.key==='Enter')submitName();});
+G('nfield').addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
 
-function submitName(){
-  const v=G('nfield').value.trim();uname=v||'friend';
+function submitName() {
+  const v = G('nfield').value.trim(); uname = v || 'friend';
   scr('s1');
-  setTimeout(()=>{const b=G('b1a');b.textContent=uname!=='friend'?`hey ${uname}.`:'hey, you.';b.classList.add('show');},200);
-  bub('b1b','t1b',1100);bub('b1c','t1c',2200);show('c1',3000);
+  setTimeout(() => { const b = G('b1a'); b.textContent = uname !== 'friend' ? `hey ${uname}.` : 'hey, you.'; b.classList.add('show'); }, 200);
+  bub('b1b', 't1b', 1100); bub('b1c', 't1c', 2200); show('c1', 3000);
 }
 
-function choosePath(p){path=p;goTo(p==='process'?'sp1':'sg1');}
+function choosePath(p) { path = p; goTo(p === 'process' ? 'sp1' : 'sg1'); }
 
-function goTo(id){
+function goTo(id) {
   scr(id);
-  const m={sp1:iP1,sp2:iP2,sp3:iP3,sg1:iG1,sg2:iG2,sg3:iG3,sbridge:iBridge};
-  if(m[id])m[id]();
+  const m = { sp1: iP1, sp2: iP2, sp3: iP3, sg1: iG1, sg2: iG2, sg3: iG3, sbridge: iBridge };
+  if (m[id]) m[id]();
 }
 
-function switchTo(p){path=p;goTo(p==='process'?'sp1':'sg1');}
+function switchTo(p) { path = p; goTo(p === 'process' ? 'sp1' : 'sg1'); }
 
-async function iP1(){await bub('bp1b','tp1b',900);await bub('bp1c','tp1c',2000);await show('jwrap',3000);await show('btnp1',3600);}
-async function iP2(){await bub('bp2b','tp2b',700);await bub('bp2c','tp2c',1800);await bub('bp2d','tp2d',3100);await show('plist',3900);await show('addbtn',4100);}
-async function iP3(){await bub('bp3b','tp3b',700);await bub('bp3c','tp3c',1900);await bub('bp3d','tp3d',3100);await show('btnp3',4000);}
-async function iG1(){await bub('bg1b','tg1b',700);await bub('bg1c','tg1c',1800);await bub('bg1d','tg1d',3200);await show('state-wrap',4000);}
-async function iG2(){await bub('bg2b','tg2b',700);await show('g2tabs',1600);}
-async function iG3(){await bub('bg3b','tg3b',700);await bub('bg3c','tg3c',1900);await show('jobfields',2800);}
-async function iBridge(){
-  const ip=path==='process';
-  G('blabel').textContent=ip?'get moving':'feel it out';
-  G('bsub').textContent=ip?'file for unemployment, update your resume, and start your search':'process what happened and find your people';
-  await bub('bbr2','tbr2',800);await bub('bbr3','tbr3',2000);await show('bc',2900);
+async function iP1() { await bub('bp1b', 'tp1b', 900); await bub('bp1c', 'tp1c', 2000); await show('jwrap', 3000); await show('btnp1', 3600); }
+async function iP2() { await bub('bp2b', 'tp2b', 700); await bub('bp2c', 'tp2c', 1800); await bub('bp2d', 'tp2d', 3100); await show('plist', 3900); await show('addbtn', 4100); }
+async function iP3() { await bub('bp3b', 'tp3b', 700); await bub('bp3c', 'tp3c', 1900); await bub('bp3d', 'tp3d', 3100); await show('btnp3', 4000); }
+async function iG1() { await bub('bg1b', 'tg1b', 700); await bub('bg1c', 'tg1c', 1800); await bub('bg1d', 'tg1d', 3200); await show('state-wrap', 4000); }
+async function iG2() { await bub('bg2b', 'tg2b', 700); await show('g2tabs', 1600); }
+async function iG3() { await bub('bg3b', 'tg3b', 700); await bub('bg3c', 'tg3c', 1900); await show('jobfields', 2800); }
+
+async function iBridge() {
+  const ip = path === 'process';
+  G('blabel').textContent = ip ? 'get moving' : 'feel it out';
+  G('bsub').textContent = ip ? 'file for unemployment, update your resume, and start your search' : 'process what happened and find your people';
+  await bub('bbr2', 'tbr2', 800); await bub('bbr3', 'tbr3', 2000); await show('bc', 2900);
 }
 
-function goToOther(){const o=path==='process'?'grind':'process';path=o;goTo(o==='process'?'sp1':'sg1');}
+function goToOther() { const o = path === 'process' ? 'grind' : 'process'; path = o; goTo(o === 'process' ? 'sp1' : 'sg1'); }
 
-function onStateSelect(){
-  const sel=G('state-select');const val=sel.value;if(!val)return;
-  const parts=val.split('|');
-  G('state-name-lbl').textContent=parts[0]+' unemployment benefits';
-  G('state-link').href=parts[1];
+function onStateSelect() {
+  const sel = G('state-select'); const val = sel.value; if (!val) return;
+  const parts = val.split('|');
+  G('state-name-lbl').textContent = parts[0] + ' unemployment benefits';
+  G('state-link').href = parts[1];
   G('state-result').classList.add('show');
-  setTimeout(()=>G('cg1-checklist').classList.add('show'),400);
+  setTimeout(() => G('cg1-checklist').classList.add('show'), 400);
 }
 
-function switchITab(idx){
-  document.querySelectorAll('.itab').forEach((t,i)=>t.classList.toggle('active',i===idx));
-  document.querySelectorAll('.itab-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+function switchITab(idx) {
+  document.querySelectorAll('.itab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.itab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
 }
 
-const avC=['#E1F5EE','#EEEDFE','#FAECE7','#E6F1FB'];
-const avBd=['#5DCAA5','#AFA9EC','#F0997B','#85B7EB'];
-const avT=['#085041','#26215C','#712B13','#0C447C'];
+const avC = ['#E1F5EE', '#EEEDFE', '#FAECE7', '#E6F1FB'];
+const avBd = ['#5DCAA5', '#AFA9EC', '#F0997B', '#85B7EB'];
+const avT = ['#085041', '#26215C', '#712B13', '#0C447C'];
 
-function updateAvi(inp,idx){
-  const av=G('av'+idx);if(!av)return;
-  const v=inp.value.trim();
-  av.textContent=v?v.charAt(0).toUpperCase():'?';
-  av.style.background=v?avC[idx%4]:'#F1EFE8';
-  av.style.borderColor=v?avBd[idx%4]:'#D3D1C7';
-  av.style.color=v?avT[idx%4]:'#888780';
+function updateAvi(inp, idx) {
+  const av = G('av' + idx); if (!av) return;
+  const v = inp.value.trim();
+  av.textContent = v ? v.charAt(0).toUpperCase() : '?';
+  av.style.background = v ? avC[idx % 4] : '#F1EFE8';
+  av.style.borderColor = v ? avBd[idx % 4] : '#D3D1C7';
+  av.style.color = v ? avT[idx % 4] : '#888780';
 }
 
-function addPerson(){
-  const list=G('plist');const idx=pcount++;
-  const rels=['colleague','partner','friend','other'];
-  const rel=rels[idx%rels.length];
-  const row=document.createElement('div');row.className='prow';
-  row.innerHTML=`<div class="avi" id="av${idx}" style="background:#F1EFE8;color:#888780;border-color:#D3D1C7;">?</div><input type="text" placeholder="someone else…" oninput="updateAvi(this,${idx})" style="color-scheme:light;flex:1;font-family:'DM Sans',sans-serif;font-size:14px;border:none;background:transparent;color:#2C2C2A;outline:none;padding:0;"/><span class="rel-tag">${rel}</span>`;
-  list.appendChild(row);row.querySelector('input').focus();
+function addPerson() {
+  const list = G('plist'); const idx = pcount++;
+  const rels = ['colleague', 'partner', 'friend', 'other'];
+  const rel = rels[idx % rels.length];
+  const row = document.createElement('div'); row.className = 'prow';
+  row.innerHTML = `<div class="avi" id="av${idx}" style="background:#F1EFE8;color:#888780;border-color:#D3D1C7;">?</div><input type="text" placeholder="someone else…" oninput="updateAvi(this,${idx})"/><span class="rel-tag">${rel}</span>`;
+  list.appendChild(row); row.querySelector('input').focus();
 }
 
-function toggleDoc(el){el.classList.toggle('chk');}
+function toggleDoc(el) { el.classList.toggle('chk'); }
 
-function restart(){
-  uname='';path='';pcount=3;
-  G('nfield').value='';G('journal').value='';
-  G('state-select').value='';
+function restart() {
+  uname = ''; path = ''; pcount = 3;
+  G('nfield').value = ''; G('journal').value = '';
+  G('state-select').value = '';
   G('state-result').classList.remove('show');
   G('cg1-checklist').classList.remove('show');
-  document.querySelectorAll('.bubble').forEach(b=>b.classList.remove('show'));
-  document.querySelectorAll('.typing').forEach(t=>t.classList.remove('show'));
-  document.querySelectorAll('.choices,.btn,.name-wrap,.fade,.journal-wrap,.inner-tab-wrap,.job-fields,.state-search-wrap,.card').forEach(e=>e.classList.remove('show'));
-  document.querySelectorAll('.doc-item').forEach(d=>d.classList.remove('chk'));
-  document.querySelectorAll('.job-field-row input').forEach(i=>i.value='');
-  G('plist').querySelectorAll('.prow:nth-child(n+4)').forEach(r=>r.remove());
-  G('plist').querySelectorAll('input').forEach(i=>i.value='');
-  for(let i=0;i<3;i++){const a=G('av'+i);if(a){a.textContent='?';a.style.background='#F1EFE8';a.style.borderColor='#D3D1C7';a.style.color='#888780';}}
+  document.querySelectorAll('.bubble').forEach(b => b.classList.remove('show'));
+  document.querySelectorAll('.typing').forEach(t => t.classList.remove('show'));
+  document.querySelectorAll('.choices, .btn, .name-wrap, .fade, .journal-wrap, .inner-tab-wrap, .job-fields, .state-search-wrap, .card').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.doc-item').forEach(d => d.classList.remove('chk'));
+  document.querySelectorAll('.job-field-row input').forEach(i => i.value = '');
+  G('plist').querySelectorAll('.prow:nth-child(n+4)').forEach(r => r.remove());
+  G('plist').querySelectorAll('input').forEach(i => i.value = '');
+  for (let i = 0; i < 3; i++) { const a = G('av' + i); if (a) { a.textContent = '?'; a.style.background = '#F1EFE8'; a.style.borderColor = '#D3D1C7'; a.style.color = '#888780'; } }
   switchITab(0);
   scr('s0');
-  (async()=>{await bub('b0a',null,400);await bub('b0b','t0b',1500);await bub('b0c','t0c',2800);await bub('b0d','t0d',4200);await show('nwrap',5000);})();
+  (async () => {
+    await bub('b0a', null, 400); await bub('b0b', 't0b', 1500);
+    await bub('b0c', 't0c', 2800); await bub('b0d', 't0d', 4200);
+    await show('nwrap', 5000);
+  })();
 }
 </script>
+</body>
+</html>
