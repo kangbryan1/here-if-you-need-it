@@ -642,7 +642,7 @@ function scr(id) {
   await bub('b0b', 't0b', 1500);
   await bub('b0c', 't0c', 2800);
   await bub('b0d', 't0d', 4200);
-  await show('nwrap', 5000);
+  await show('nwrap', 4760);
 })();
 
 G('nfield').addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
@@ -737,7 +737,7 @@ function restart() {
   (async () => {
     await bub('b0a', null, 400); await bub('b0b', 't0b', 1500);
     await bub('b0c', 't0c', 2800); await bub('b0d', 't0d', 4200);
-    await show('nwrap', 5000);
+    await show('nwrap', 4760);
   })();
 }
 </script>
