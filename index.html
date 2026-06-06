@@ -619,7 +619,7 @@
 let uname = '', path = '', pcount = 3;
 const G = id => document.getElementById(id);
 const wait = ms => new Promise(r => setTimeout(r, ms));
-const T = 0.8;
+const T = 0.72;
 
 async function typ(tid, ms) { await wait(ms * T); G(tid) && G(tid).classList.add('show'); }
 async function untyp(tid) { G(tid) && G(tid).classList.remove('show'); }
